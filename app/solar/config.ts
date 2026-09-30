@@ -1,29 +1,31 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Solar funnel content config.
 //
-// ⚠️  PLACEHOLDER DATA: items marked `PLACEHOLDER` use illustrative figures/quotes.
-//     Replace them with verified Southern Energy results before this page goes live.
-//     The qualitative narrative ("consistent prospects & conversions without a
-//     door-to-door team") is accurate and safe to keep as-is.
+// Items marked `placeholder` are NOT rendered (2026-09-22): the page is live, so
+// only verified figures show. Fill a placeholder with a real, approved value and
+// drop the flag to render it. The client is anonymized ("a Texas solar company")
+// per the site-wide copy rule — no client is named on the site.
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Where every CTA sends the visitor. Swap for a solar-specific Calendly/booking link. */
 export const BOOKING_URL = "https://dealflow.tracerlabs.io/lead-intake";
 
-/** Headline proof stats. The two marked PLACEHOLDER need real numbers. */
+/** Headline proof stats — the same client as /work/solar-lead-engine (advertising
+ *  ran 1 Apr – 22 Sep 2026). Leads and closed deals are owner-reported; the rate is
+ *  calculated. Recorded booking counts (420 / 578) are NOT used here: the owner
+ *  states they include duplicates and reschedules. Placeholders are hidden. */
 export const PROOF_STATS: { value: string; label: string; placeholder?: boolean }[] = [
-  { value: "40+", label: "Qualified appointments / month", placeholder: true },
-  { value: "0", label: "Door-knockers required" },
-  { value: "24/7", label: "AI agent booking calls" },
-  { value: "3.2×", label: "Pipeline vs. canvassing", placeholder: true },
+  { value: "124", label: "Deals closed from 817 leads" },
+  { value: "15.2%", label: "Lead-to-sale conversion" },
+  { value: "158 of 397", label: "Initially unbooked leads converted by AI follow-up" },
+  { value: "24/7", label: "AI agent booking around the clock" },
 ];
 
-/** Replace the bracketed text with a real, approved quote from the Southern Energy owner. */
+/** A real, approved quote from the client owner goes here. Hidden while `placeholder` is set. */
 export const TESTIMONIAL = {
-  quote:
-    "[Add a 1–2 sentence quote from the Southern Energy owner about the consistent, predictable pipeline this system created.]",
+  quote: "",
   name: "Owner",
-  company: "Southern Energy",
+  company: "A Texas solar company",
   placeholder: true,
 };
 

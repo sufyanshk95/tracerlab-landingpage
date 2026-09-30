@@ -1,13 +1,14 @@
 // Proof wall — the Precocity-style credibility strip: one client, one number,
-// nothing else. Sits directly under the hero so the first scroll lands on
-// verifiable outcomes. Numbers come from production systems (see /work/*).
+// nothing else. RETIRED / unmounted — superseded by Evidence.tsx (which adds
+// scope + source per figure). Figures kept in sync with Evidence so nothing
+// stale ships if this is ever remounted.
 const DISPLAY = "var(--font-archivo), system-ui, sans-serif";
 
 const PROOF = [
-  { v: "367", l: "solar consultations booked", who: "A Texas solar company" },
-  { v: "20", l: "paid bookings in week one", who: "Harbs Farm" },
-  { v: "94%", l: "appointment show rate", who: "Across 487 appointments" },
-  { v: "2×", l: "lead-to-consult rate", who: "After the AI texting agent" },
+  { v: "$40–$52", l: "advertising cost per booked appointment", who: "Home services, meat processing & med spa accounts" },
+  { v: "124", l: "solar deals closed from 817 leads (15.2%)", who: "A Texas solar company — owner-reported" },
+  { v: "39.8%", l: "of initially unbooked leads converted by AI follow-up (158 of 397)", who: "Same client — owner-reported cohort" },
+  { v: "20", l: "paid bookings in week one, deposits paid", who: "Meat processing" },
 ];
 
 export default function ProofWall() {

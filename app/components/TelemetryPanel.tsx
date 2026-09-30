@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import RateChart from "./RateChart";
 
 // Rotating client meter for the hero telemetry panel — cycles through real
-// client meters (solar engine → Harbs Farm → all-clients roll-up) so the
+// client meters (solar engine → meat processing → all-clients roll-up) so the
 // "same meter we run for every client" claim is demonstrated, not asserted.
 // Auto-advances every 8s; pauses on hover; respects reduced motion; tabs are
 // real buttons. Every figure is production data with an honest label.
@@ -22,18 +22,18 @@ type Pane = {
 const PANES: Pane[] = [
   {
     tab: "Solar engine",
-    headline: "367",
-    headlineLabel: "solar consultations booked on autopilot — Texas",
+    headline: "124",
+    headlineLabel: "solar deals closed from 817 leads — Texas, owner-reported",
     figures: [
-      ["94%", "appointment show rate"],
-      ["2×", "lead → consult rate after the AI texting agent"],
+      ["15.2%", "lead → sale conversion"],
+      ["158", "of 397 initially unbooked leads converted by AI follow-up"],
     ],
     chart: true,
   },
   {
-    tab: "Harbs Farm",
+    tab: "Meat processing",
     headline: "20",
-    headlineLabel: "paid bookings in the first week of ads — Harbs Farm, New York",
+    headlineLabel: "paid bookings in the first week of ads — a meat-processing farm, New York",
     figures: [
       ["100%", "of deposits collected up front"],
       ["0", "phone calls needed to book"],

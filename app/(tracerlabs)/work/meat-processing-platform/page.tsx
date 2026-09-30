@@ -4,8 +4,14 @@ import Footer from "../../../components/Footer";
 import Card from "../../../components/Card";
 import Button from "../../../components/Button";
 import CaseHeader from "../../../components/CaseHeader";
+import { CaseStudyJsonLd } from "../../../components/JsonLd";
+import { SITE_URL } from "../../../lib/site";
 
-// Case study: Harbs Farm — the flagship client story (named with permission).
+// Case study: the meat-processing platform — the flagship client story.
+// ANONYMIZED 2026-09-29 at the owner's instruction: the client was previously
+// named here with permission, and that permission was withdrawn site-wide.
+// Do not reintroduce the client or company name anywhere on this page, in its
+// metadata, its JSON-LD, its URL or its asset filenames.
 // Rewritten 2026-09 as problem → solution → outcome scenarios (mirrors
 // /work/solar-lead-engine): the farm's constraint was CAPACITY, not demand —
 // every scenario is a manual process the platform absorbed. Telemetry design
@@ -13,16 +19,16 @@ import CaseHeader from "../../../components/CaseHeader";
 // gradient exactly once (the hero number), decorative fal.ai scenario banners.
 
 export const metadata: Metadata = {
-  title: "Case Study: Harbs Farm",
+  title: "Case Study: A Custom Operations Platform for a Meat-Processing Farm",
   description:
-    "A meat-processing farm that ran on phone calls and paper cut sheets. We digitized the whole operation — self-serve bookings, deposit-gated slots, automated status updates, invoicing — and freed the capacity they were losing to coordination.",
-  alternates: { canonical: "/work/harbs-farm" },
+    "A meat-processing farm ran on phone calls and paper cut sheets. We built a custom platform: self-serve bookings with the cut sheet built in, Square deposit-gated slots, a processing board that texts customers, an AI receptionist, invoicing and a customer portal. 20 paid bookings in the first week of ads.",
+  alternates: { canonical: "/work/meat-processing-platform" },
   openGraph: {
     type: "article",
-    url: "https://tracerlabs.io/work/harbs-farm",
+    url: `${SITE_URL}/work/meat-processing-platform`,
     siteName: "Tracerlabs",
     locale: "en_US",
-    title: "Case Study: Harbs Farm | Tracerlabs",
+    title: "Case Study: A Meat-Processing Operations Platform | Tracerlabs",
     description:
       "From phone calls and paper cut sheets to a self-serve operation — deposit-gated bookings, automated updates, digital invoicing. 20 paid bookings in the first week of ads.",
   },
@@ -35,6 +41,7 @@ const SECTIONS = [
   { id: "no-shows", n: "2", nav: "Wasted slots" },
   { id: "status", n: "3", nav: "“Is my order ready?”" },
   { id: "back-office", n: "4", nav: "The back office" },
+  { id: "scope", n: "5", nav: "Scope & limits" },
 ] as const;
 
 const STACK = [
@@ -94,7 +101,7 @@ function Scenario({
         {title}
       </h2>
       {img && (
-        <div aria-hidden className="relative mt-6 aspect-[21/9] w-full max-w-[42rem] overflow-hidden bg-[#0b0b0f]">
+        <div aria-hidden className="relative mt-6 aspect-[21/9] w-full max-w-[42rem] overflow-hidden bg-[#07090d]">
           <Image src={img} alt="" fill sizes="(max-width: 700px) 100vw, 42rem" className="object-cover" loading="lazy" />
         </div>
       )}
@@ -103,14 +110,22 @@ function Scenario({
   );
 }
 
-export default function HarbsFarmCaseStudy() {
+export default function MeatProcessingCaseStudy() {
   return (
     <div>
+      <CaseStudyJsonLd
+        slug="meat-processing-platform"
+        name="Case study: a meat-processing operations platform"
+        headline="Case study: a custom operations platform for a meat-processing farm"
+        description="A meat-processing farm that ran on phone calls and paper now takes bookings online, collects deposits, runs a processing board that texts customers, and invoices from the same records."
+        about="Custom CRM, scheduling, deposit collection, processing board and invoicing for a meat-processing farm"
+        dateModified="2026-09-25"
+      />
       <CaseHeader />
       <main className="font-body w-full bg-page text-ink">
         {/* Header */}
         <header className="mx-auto w-full max-w-[1060px] px-6 pt-16 sm:px-10 sm:pt-20">
-          <p className="text-[0.95rem] text-ink/50">Case study — meat processing, New York</p>
+          <p className="text-[0.95rem] text-ink/50">Case study — meat processing, New York · working platform, measured first-week results</p>
           <h1
             className="mt-4 max-w-[17ch] text-[clamp(2.1rem,5vw,3.4rem)] font-extrabold leading-[1.06] tracking-tight text-ink"
             style={{ fontFamily: DISPLAY }}
@@ -118,7 +133,7 @@ export default function HarbsFarmCaseStudy() {
             The farm that ran on phone calls runs on software now.
           </h1>
           <p className="mt-6 max-w-[44rem] text-[1.12rem] leading-[1.7] text-ink/60">
-            Harbs Farm never had a demand problem — customers were already
+            The farm never had a demand problem — customers were already
             asking for a website where they could book. They had a capacity
             problem: every booking, every cut-sheet preference, every
             &ldquo;is my order ready?&rdquo; went through a phone call and a
@@ -134,17 +149,17 @@ export default function HarbsFarmCaseStudy() {
                 className="bg-gradient-to-r from-brand-pink to-brand-blue bg-clip-text text-[clamp(4rem,9vw,6.5rem)] font-extrabold leading-none tracking-tight text-transparent"
                 style={{ fontFamily: DISPLAY }}
               >
-                0
+                20
               </div>
               <div className="mt-2 text-[1rem] text-ink/60">
-                phone calls needed to book, pay, or check an order
+                paid bookings in the first week of ads — every one with the deposit paid
               </div>
             </div>
             <dl className="flex flex-wrap gap-x-10 gap-y-5 pb-1">
               {[
-                ["100%", "of deposits collected up front"],
-                ["20", "paid bookings, first week of ads"],
-                ["1 in 8", "search visitors becomes a booking"],
+                ["1 in 8", "search visitors booked, first campaign week"],
+                ["0", "phone calls required to book, pay or check an order"],
+                ["4", "manual processes replaced: booking, deposits, status, invoicing"],
               ].map(([v, l]) => (
                 <div key={l}>
                   <dt className="sr-only">{l}</dt>
@@ -179,7 +194,7 @@ export default function HarbsFarmCaseStudy() {
           </nav>
 
           <div className="min-w-0 pt-2">
-            <Scenario id="phone" n="1" title="Run by phone" img="/assets/work-harbs-phone.jpg">
+            <Scenario id="phone" n="1" title="Run by phone" img="/assets/work-meatproc-phone.jpg">
               <RunIn label="The problem">
                 The phone was the front desk, the order form, and the filing
                 cabinet. Every booking was a call. Cut sheets — how each
@@ -207,7 +222,7 @@ export default function HarbsFarmCaseStudy() {
               </Result>
             </Scenario>
 
-            <Scenario id="no-shows" n="2" title="Wasted slots" img="/assets/work-harbs-deposit.jpg">
+            <Scenario id="no-shows" n="2" title="Wasted slots" img="/assets/work-meatproc-deposit.jpg">
               <RunIn label="The problem">
                 Processing capacity is the whole business — there are only so
                 many slots in a week. People would book one, then never show
@@ -234,7 +249,7 @@ export default function HarbsFarmCaseStudy() {
               </Result>
             </Scenario>
 
-            <Scenario id="status" n="3" title="&ldquo;Is my order ready?&rdquo;" img="/assets/work-harbs-kanban.jpg">
+            <Scenario id="status" n="3" title="&ldquo;Is my order ready?&rdquo;" img="/assets/work-meatproc-kanban.jpg">
               <RunIn label="The problem">
                 Once an animal was dropped off, the only way for a customer to
                 know its status was to call — and someone at the farm had to
@@ -259,7 +274,7 @@ export default function HarbsFarmCaseStudy() {
               </Result>
             </Scenario>
 
-            <Scenario id="back-office" n="4" title="The back office" img="/assets/work-harbs-finance.jpg">
+            <Scenario id="back-office" n="4" title="The back office" img="/assets/work-meatproc-finance.jpg">
               <RunIn label="The problem">
                 Invoicing was manual — hours of it — and financial visibility
                 was whatever could be reconstructed from paper, memory, and the
@@ -305,6 +320,41 @@ export default function HarbsFarmCaseStudy() {
               </p>
               <p className="mt-5 max-w-[42rem] text-[0.92rem] leading-relaxed text-ink/45">
                 Built with {STACK.join(" · ")}.
+              </p>
+            </section>
+
+            {/* Scope, people, limits */}
+            <section id="scope" className="scroll-mt-28 border-t border-ink/10 py-12 sm:py-14">
+              <h2
+                className="text-[clamp(1.5rem,3vw,2rem)] font-bold leading-tight tracking-tight text-ink"
+                style={{ fontFamily: DISPLAY }}
+              >
+                <span className="mr-3 text-ink/30">5</span>
+                Scope, people and limits
+              </h2>
+              <dl className="mt-6 flex max-w-[42rem] flex-col gap-5">
+                {[
+                  ["Customer and industry", "A family-run meat-processing farm in New York, anonymized at the client's request."],
+                  ["Original problem", "Capacity lost to coordination: every booking, cut-sheet preference, status question and invoice went through a phone call and paper."],
+                  ["What was implemented", "Online booking with cut sheets and the rate card encoded; a Square deposit gate with owner-controlled capacity; a processing board that texts customers at each stage; an AI receptionist for order status; automated invoicing; a customer portal; an admin dashboard with a revenue view; Meta ad campaigns with conversion tracking."],
+                  ["Human responsibilities", "The family and staff do the processing, move orders across the board, set capacity and pricing, and edit invoices when reality differs. The system records, notifies and collects."],
+                  ["Measurement period", "The booking figures are from the first week of paid ad campaigns, measured in the booking platform, Square and the ad account. Operational outcomes (calls, hours) are described qualitatively — we have not published measured before/after time savings."],
+                  ["Evidence", "The platform itself, shown in the demo video on the home page; booking and deposit records; the ad account."],
+                  ["Limits", "One week of campaign data is a small sample. No revenue figure, no percentage time saving and no customer testimonial is published. The processing-line integration described above is planned, not live."],
+                ].map(([k, v]) => (
+                  <div key={k} className="grid grid-cols-1 gap-1 sm:grid-cols-[12rem_1fr] sm:gap-4">
+                    <dt className="text-[0.95rem] font-semibold text-ink" style={{ fontFamily: DISPLAY }}>{k}</dt>
+                    <dd className="m-0 text-[0.98rem] leading-[1.7] text-ink/62">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-6 text-[0.92rem] text-ink/50">
+                Related services:{" "}
+                <a href="/services/custom-crm" className="font-semibold text-ink/70 underline decoration-ink/25 underline-offset-4 hover:text-ink">custom CRM &amp; automation</a>
+                {" · "}
+                <a href="/services/scheduling-and-operations" className="font-semibold text-ink/70 underline decoration-ink/25 underline-offset-4 hover:text-ink">scheduling &amp; fulfillment coordination</a>
+                {" · "}
+                <a href="/services/invoicing-payments-payroll" className="font-semibold text-ink/70 underline decoration-ink/25 underline-offset-4 hover:text-ink">invoicing &amp; payments</a>
               </p>
             </section>
 

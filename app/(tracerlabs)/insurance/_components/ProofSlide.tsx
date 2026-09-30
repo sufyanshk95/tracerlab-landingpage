@@ -3,7 +3,7 @@ import Bevel, { GLASS_BORDER, GLASS_BG } from "../../../components/Bevel";
 import Eyebrow from "../../../components/Eyebrow";
 import { BRAND_GRADIENT, CountUp, Kinetic, Reveal } from "../../../components/motion";
 
-// Single REAL case study (Harbs Farm, kept anonymized per the client's request). These are
+// Single REAL case study (the meat-processing farm, kept anonymized). These are
 // the owner's reported outcomes — not illustrative.
 const STATS: { value: number; prefix?: string; suffix?: string; k: string }[] = [
   { value: 5, suffix: " hrs", k: "Max owner phone time / week" },

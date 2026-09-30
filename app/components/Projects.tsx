@@ -1,26 +1,30 @@
-// Recent work (Night Telemetry) — two tiers with deliberate hierarchy:
-// client case studies are SPOTLIGHT glass panels (product-window media chrome,
-// big telemetry figures, a real button), products & experiments stay quiet
-// editorial rows beneath. No scroll-reveal gating.
+// Case studies — two tiers. Client work sits in SPOTLIGHT panels; our own
+// products and experiments stay quiet editorial rows beneath.
+//
+// These cards explain the PROBLEM and the SYSTEM we delivered. The headline
+// numbers live in Evidence.tsx (selected results) and the full breakdown lives
+// in the case studies themselves — repeating the same stat block in all three
+// places is what this section deliberately stops doing. One outcome line per
+// card, then a link.
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import ProjectVideo from "./ProjectVideo";
 import Button from "./Button";
 import Card from "./Card";
+import { AD_WINDOW, FOLLOW_UP_RATE, LEAD_TO_SALE, SOLAR } from "../lib/solarResults";
 
 type Media =
   | { kind: "video"; src: string; poster: string; fit?: "cover" | "contain"; label: string }
   | { kind: "image"; src: string; alt: string; fit?: "cover" | "contain" }
   | { kind: "panel" };
 
-type Figure = { v: string; l: string };
-
 type CaseStudy = {
   id: string;
   client: string;
   title: string;
   blurb: string;
-  figures: Figure[];
+  /** One outcome line — the detail belongs in the case study. */
+  outcome: string;
   tech: string;
   href: string;
   media: Media;
@@ -40,18 +44,18 @@ type Product = {
 const DISPLAY = "var(--font-archivo), system-ui, sans-serif";
 const ACCENT = "var(--tl-accent-text)";
 
-const CASE_STUDIES: CaseStudy[] = [
+type Kind = "measured" | "demo";
+
+const CASE_STUDIES: (CaseStudy & { period: string; kind: Kind })[] = [
   {
     id: "solar",
-    client: "A Texas solar company",
-    title: "An AI sales engine that books solar consults on autopilot",
+    client: "A Texas solar company · solar",
+    title: "A lead engine that books solar consultations",
     blurb:
-      "A verified-leads funnel paired with an AI texting agent that reaches every lead within minutes and books the consultation — plus a confirmation agent that reminds and reschedules so appointments actually happen.",
-    figures: [
-      { v: "367", l: "consults booked" },
-      { v: "2×", l: "lead → consult rate" },
-      { v: "94%", l: "show rate" },
-    ],
+      "A verified-leads funnel paired with an AI text agent that works the leads the funnel did not close, plus a confirmation agent that reminds and reschedules. The client's sales team runs the consultations and closes the deals.",
+    outcome: `${SOLAR.closedDeals} closed deals from ${SOLAR.totalLeads} leads — a ${LEAD_TO_SALE}% lead-to-sale rate.`,
+    period: `Advertising ran ${AD_WINDOW}. Leads and closed deals are owner-reported; AI follow-up converted ${FOLLOW_UP_RATE}% of initially unbooked leads. The client's sales team closed the deals.`,
+    kind: "measured",
     tech: "Next.js, Retell, Twilio, GoHighLevel",
     href: "/work/solar-lead-engine",
     media: {
@@ -59,28 +63,26 @@ const CASE_STUDIES: CaseStudy[] = [
       src: "/assets/solar-funnel.mp4",
       poster: "/assets/solar-funnel-poster.jpg",
       fit: "cover",
-      label: "Demo reel of the solar lead-gen funnel that books appointments daily.",
+      label: "Demo reel of the solar lead-generation funnel and AI booking agent.",
     },
   },
   {
     id: "meatops",
-    client: "Harbs Farm — meat processing, New York",
-    title: "The platform that runs Harbs Farm end-to-end",
+    client: "Meat processing company · New York",
+    title: "The platform that runs a meat processing company's bookings, floor and invoicing",
     blurb:
-      "We took a farm running on phone calls and paper fully online: a booking wizard for farmers, deposits through Square, a kanban board for staff, owner-controlled capacity — plus the ad campaigns and reminder ladders that fill it.",
-    figures: [
-      { v: "20", l: "bookings, week one" },
-      { v: "100%", l: "deposits paid" },
-      { v: "1 in 8", l: "visitors book" },
-    ],
+      "A farm that ran on phone calls and paper now takes bookings online with the cut sheet built in, collects deposits through Square, moves orders across a staff processing board that texts customers at each stage, and generates invoices from the same data. The family still does the processing.",
+    outcome: "20 paid bookings in the first week of ads, every one deposit-paid.",
+    period: "First week of paid campaigns. Source: the farm's booking platform, Square and the ad account.",
+    kind: "measured",
     tech: "Next.js, Supabase, Square, Meta Ads",
-    href: "/work/harbs-farm",
+    href: "/work/meat-processing-platform",
     media: {
       kind: "video",
-      src: "/assets/harbs-demo.mp4",
-      poster: "/assets/harbs-demo-poster.jpg",
+      src: "/assets/meatproc-demo.mp4",
+      poster: "/assets/meatproc-demo-poster.jpg",
       fit: "cover",
-      label: "Demo video of the Harbs Farm booking and operations platform.",
+      label: "Demo video of the meat processing booking and operations platform.",
     },
   },
 ];
@@ -92,7 +94,7 @@ const PRODUCTS: Product[] = [
     title: "A GIS canvassing app that turns every door into intelligence",
     blurb:
       "A GIS-style map layered with public homeowner data — plus a companion mobile CRM so reps capture intel in the field, track territory, and never knock the same door twice.",
-    metrics: ["GIS + public homeowner data", "Companion mobile CRM"],
+    metrics: ["GIS map with public homeowner data", "Companion mobile CRM"],
     tech: "Next.js, React Native, Google Maps, Supabase",
     link: { label: "See the live page", href: "https://offset-canvassing.vercel.app/", external: true },
     media: {
@@ -107,7 +109,7 @@ const PRODUCTS: Product[] = [
   },
   {
     id: "fitness",
-    client: "Our product",
+    client: "Our product — BeastMode",
     title: "An AI coach that builds martial-arts training and meal plans",
     blurb:
       "A cross-platform fitness app where an AI “sensei” generates personalized workouts, nutrition guidance, and grocery lists — kitchen to gym, on iOS, Android, and web.",
@@ -124,11 +126,11 @@ const PRODUCTS: Product[] = [
   },
   {
     id: "aivideo",
-    client: "For DTC & local brands",
+    client: "Our experiment — AI video ads",
     title: "Cinematic video ads, generated with AI",
     blurb:
-      "We script, generate, and render scroll-stopping video ads with a Remotion + fal.ai pipeline — full campaigns shipped in days, not weeks, for a fraction of a traditional production crew.",
-    metrics: ["Campaigns in days", "10+ reels shipped"],
+      "We script, generate, and render video ads with a Remotion + fal.ai pipeline. The reel below is a demonstration piece, not client work.",
+    metrics: ["Scripted, generated and rendered in-house", "Working demonstration below"],
     tech: "Remotion, fal.ai, Next.js",
     link: { label: "Get a reel for your brand", href: "#contact" },
     media: {
@@ -141,7 +143,7 @@ const PRODUCTS: Product[] = [
   },
 ];
 
-// Kanban-style ops board rendering for the Harbs Farm platform.
+// Kanban-style ops board rendering for the meat-processing platform.
 function OpsPanel() {
   const STATUS = {
     drop: { label: "Drop-off", color: "#8a8a93", bg: "rgba(138,138,147,0.15)" },
@@ -251,8 +253,8 @@ function MediaChrome({
     <div
       className={`${
         frameless
-          ? "overflow-clip bg-[#0b0b0f]"
-          : "overflow-clip border border-ink/15 bg-[#0b0b0f] transition-shadow duration-300 hover:shadow-[var(--nt-underglow)]"
+          ? "overflow-clip bg-[#07090d]"
+          : "overflow-clip border border-ink/15 bg-[#07090d] transition-shadow duration-300 hover:shadow-[var(--nt-underglow)]"
       }${fill ? " flex flex-col" : ""} ${className}`}
     >
       {/* nt-px-window: the reel/poster parallaxes behind the frame (overflow-clip,
@@ -265,10 +267,19 @@ function MediaChrome({
 }
 
 // Spotlight panel for a client case study — the loud tier.
-function CaseCard({ cs, mediaRight }: { cs: CaseStudy; mediaRight: boolean }) {
+function KindChip({ kind }: { kind: Kind }) {
+  return (
+    <span className="bv-6 inline-flex items-center gap-1.5 bg-ink/[0.06] px-2 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.14em] text-ink/60">
+      <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: kind === "measured" ? ACCENT : "var(--tl-ink)" }} />
+      {kind === "measured" ? "Measured outcome" : "Working demonstration"}
+    </span>
+  );
+}
+
+function CaseCard({ cs, mediaRight }: { cs: CaseStudy & { period: string; kind: Kind }; mediaRight: boolean }) {
   return (
     <article id={`work-${cs.id}`} className="scroll-mt-24">
-      <Card bevel={16} depth={14} contentClassName="h-full">
+      <Card bevel={16} depth={14} className="lg:min-h-[35rem]" contentClassName="h-full">
       {/* media bleeds flush to the card border (full column height); only the
           copy column carries the padding */}
       <div
@@ -280,7 +291,10 @@ function CaseCard({ cs, mediaRight }: { cs: CaseStudy; mediaRight: boolean }) {
           <MediaChrome media={cs.media} frameless fill className="h-full" />
         </div>
         <div className={`min-w-0 p-6 sm:p-8 lg:p-10 ${mediaRight ? "lg:order-1" : ""}`}>
-          <p className="text-[0.9rem] text-ink/50">{cs.client}</p>
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-[0.9rem] text-ink/50">{cs.client}</p>
+            <KindChip kind={cs.kind} />
+          </div>
           <h3
             className="mt-2 max-w-[24ch] text-[clamp(1.6rem,2.8vw,2.2rem)] font-extrabold leading-[1.12] tracking-tight text-ink"
             style={{ fontFamily: DISPLAY }}
@@ -289,25 +303,12 @@ function CaseCard({ cs, mediaRight }: { cs: CaseStudy; mediaRight: boolean }) {
           </h3>
           <p className="mt-4 max-w-[40rem] text-[1rem] leading-[1.7] text-ink/60">{cs.blurb}</p>
 
-          {/* telemetry figures */}
-          <dl className="mt-7 flex flex-wrap gap-x-10 gap-y-5 border-t border-ink/10 pt-6">
-            {cs.figures.map((f) => (
-              <div key={f.l}>
-                <dt className="sr-only">{f.l}</dt>
-                <dd>
-                  <span
-                    className="nt-figure block text-[1.9rem] font-extrabold leading-none tracking-tight"
-                    style={{ fontFamily: DISPLAY, color: ACCENT }}
-                  >
-                    {f.v}
-                  </span>
-                  <span className="mt-1.5 block text-[0.85rem] text-ink/55">{f.l}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <p className="mt-7 border-t border-ink/10 pt-6 text-[1.05rem] font-semibold leading-snug text-ink" style={{ fontFamily: DISPLAY }}>
+            {cs.outcome}
+          </p>
 
-          <p className="mt-5 text-[0.82rem] text-ink/40">{cs.tech}</p>
+          <p className="mt-4 max-w-[40rem] text-[0.82rem] leading-relaxed text-ink/45">{cs.period}</p>
+          <p className="mt-3 text-[0.82rem] text-ink/40">{cs.tech}</p>
 
           <div className="relative z-10 mt-6">
             <Button href={cs.href} variant="secondary">
@@ -324,75 +325,20 @@ function CaseCard({ cs, mediaRight }: { cs: CaseStudy; mediaRight: boolean }) {
   );
 }
 
-// Wide feature tile — case-card layout for a product: portrait media column
-// (fills the card height, same mechanism as CaseCard) beside the copy. Used
-// for the canvassing reel, whose 9:16 footage was unwatchable when stretched
-// across a full bento column.
-function ProductCardWide({ p }: { p: Product }) {
-  return (
-    <article id={`work-${p.id}`} className="scroll-mt-24">
-      <Card bevel={12} depth={14} contentClassName="h-full">
-        <div className="grid h-full grid-cols-1 lg:grid-cols-[auto_1fr]">
-          {/* the media column's WIDTH derives from the card's height at 9:16,
-              so the portrait reel displays essentially uncropped */}
-          <div className="lg:aspect-[9/16] lg:h-full">
-            <MediaChrome media={p.media} frameless fill className="h-full" />
-          </div>
-          <div className="flex min-w-0 flex-col p-6 sm:p-8">
-            <p className="text-[0.85rem] text-ink/50">{p.client}</p>
-            <h3
-              className="mt-1.5 text-[1.35rem] font-bold leading-[1.25] tracking-tight text-ink"
-              style={{ fontFamily: DISPLAY }}
-            >
-              {p.title}
-            </h3>
-            <p className="mt-3 max-w-[40rem] text-[0.95rem] leading-[1.65] text-ink/60">{p.blurb}</p>
-            <ul className="mt-4 flex list-none flex-col gap-1 p-0">
-              {p.metrics.map((m) => (
-                <li key={m} className="text-[0.88rem] font-semibold" style={{ color: ACCENT }}>
-                  {m}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-2.5 text-[0.78rem] text-ink/40">{p.tech}</p>
-            <a
-              href={p.link.href}
-              {...(p.link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="mt-auto inline-block pt-5 text-[0.92rem] font-semibold text-ink/75 underline decoration-ink/25 underline-offset-4 transition-colors after:absolute after:inset-0 after:content-[''] hover:text-ink hover:decoration-ink/60"
-            >
-              {p.link.label}
-            </a>
-          </div>
-        </div>
-      </Card>
-    </article>
-  );
-}
+// Product tile. Every card uses the SAME fixed media height, so a portrait
+// reel and a landscape one still produce identically-shaped cards — the clip
+// is centred in the well (`object-contain` for portrait) rather than the well
+// resizing to the clip. That is what keeps the row aligned.
+const PRODUCT_MEDIA_H = "h-[13.5rem]";
 
-// Bento tile for a product — media up top (wide crop), copy below, link
-// pinned to the card's foot so the grid stays flush. `fillMedia` lets the
-// media soak up any surplus height the grid hands the card (the tall feature
-// tile), so a stretched card never shows dead space under the copy.
-function ProductCard({
-  p,
-  aspect = "aspect-[16/10]",
-  fillMedia = false,
-}: {
-  p: Product;
-  aspect?: string;
-  fillMedia?: boolean;
-}) {
+function ProductCard({ p }: { p: Product }) {
   return (
     <article id={`work-${p.id}`} className="h-full scroll-mt-24">
       <Card bevel={12} depth={24} className="h-full" contentClassName="h-full">
-        <MediaChrome
-          media={p.media}
-          aspect={aspect}
-          frameless
-          fill={fillMedia}
-          className={fillMedia ? "min-h-0 lg:flex-1" : ""}
-        />
-        <div className={`flex flex-col p-6 ${fillMedia ? "" : "flex-1"}`}>
+        <div className={`nt-px-window relative w-full shrink-0 overflow-clip bg-[#07090d] ${PRODUCT_MEDIA_H}`}>
+          <MediaBody media={p.media} />
+        </div>
+        <div className="flex flex-1 flex-col p-6">
           <p className="text-[0.85rem] text-ink/50">{p.client}</p>
           <h3
             className="mt-1.5 text-[1.15rem] font-bold leading-[1.25] tracking-tight text-ink"
@@ -444,16 +390,16 @@ export default function Projects() {
         {/* header — leads the cards by a hair */}
         <div className="nt-px max-w-[44rem]" style={{ "--px": "8px" } as CSSProperties}>
           <span aria-hidden className="nt-kicker" />
-          <p className="text-[0.98rem] text-ink/50">Recent work</p>
+          <p className="text-[0.98rem] text-ink/50">Case studies</p>
           <h2
             className="mt-4 text-[clamp(2.1rem,4.6vw,3.3rem)] font-extrabold leading-[1.06] tracking-tight text-ink"
             style={{ fontFamily: DISPLAY }}
           >
-            Work we&apos;ve shipped.
+            See what we&rsquo;ve built.
           </h2>
           <p className="mt-5 max-w-[40rem] text-[1.05rem] leading-[1.7] text-ink/60">
-            Real products in production — funnels, AI agents, field-sales
-            platforms, operations software, and AI video.
+            Two engagements running in production — the problem each business had,
+            the system we built, and what it has produced since.
           </p>
         </div>
 
@@ -468,24 +414,20 @@ export default function Projects() {
         </div>
 
         {/* Portfolio strip — breadth beyond the two spotlights, kept quiet */}
-        <p className="mt-6 text-[0.9rem] leading-relaxed text-ink/45">
-          Also in production across the portfolio: more solar lead funnels,
-          live analytics dashboards, and AI SMS agents. Next build: a DTC
-          meat-delivery storefront.
+        <p className="mt-6 max-w-[52rem] text-[0.9rem] leading-relaxed text-ink/45">
+          Also running without a public case study: lead generation and AI booking for
+          home-service businesses and med spas — the accounts behind the $40–$52 cost per
+          booked appointment above — plus more solar funnels and analytics dashboards.
         </p>
 
         {/* Tier 2 — products & experiments */}
         <p className="mt-16 text-[0.9rem] font-semibold text-ink/45" style={{ fontFamily: DISPLAY }}>
-          Our products &amp; experiments
+          Our own products &amp; experiments (not client results)
         </p>
-        <div className="mt-6 flex flex-col gap-4 lg:gap-5">
-          {/* wide feature — the canvassing reel in a case-card layout, so the
-              9:16 footage keeps sane proportions instead of filling a column */}
-          <ProductCardWide p={PRODUCTS[0]} />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-5">
-            <ProductCard p={PRODUCTS[1]} />
-            <ProductCard p={PRODUCTS[2]} />
-          </div>
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+          {PRODUCTS.map((p) => (
+            <ProductCard key={p.id} p={p} />
+          ))}
         </div>
 
         {/* section CTA → conversion */}
