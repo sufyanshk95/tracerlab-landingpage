@@ -7,15 +7,24 @@ import Button from "./Button";
 // Persistent conversion bar: slides in once the hero scrolls away, and gets out of the
 // way again when the reader reaches the real CTA section (or dismisses it).
 // Per-page wiring via props: which sections gate visibility, and what the bar says/links to.
+//
+// `yieldToIds` names sections the bar must NOT sit over — the interactive CRM
+// demonstration and the testimonial players, whose controls live near the
+// bottom edge where the bar floats. It stands down while any of them is on
+// screen OR while keyboard focus is inside one, then comes back afterwards —
+// unless the visitor dismissed it, which is permanent for the session. The bar
+// is `position: fixed`, so none of this moves page content.
 export default function StickyCtaBar({
   heroId,
   ctaId,
+  yieldToIds = [],
   message,
   buttonLabel = "Book a Demo",
   buttonHref,
 }: {
   heroId: string;
   ctaId: string;
+  yieldToIds?: string[];
   message: string;
   buttonLabel?: string;
   buttonHref: string;
@@ -23,6 +32,8 @@ export default function StickyCtaBar({
   const reduced = useReducedMotion();
   const [pastHero, setPastHero] = useState(false);
   const [nearCta, setNearCta] = useState(false);
+  const [overYieldZone, setOverYieldZone] = useState(false);
+  const [focusInYieldZone, setFocusInYieldZone] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
@@ -39,7 +50,45 @@ export default function StickyCtaBar({
     };
   }, [heroId, ctaId]);
 
-  const show = pastHero && !nearCta && !dismissed;
+  // Stand down over the sections that must stay unobstructed. Tracked as a set
+  // because several can be on screen at once on a tall viewport.
+  const yieldKey = yieldToIds.join(",");
+  useEffect(() => {
+    const ids = yieldKey ? yieldKey.split(",") : [];
+    const nodes = ids.map((id) => document.getElementById(id)).filter((n): n is HTMLElement => Boolean(n));
+    if (nodes.length === 0) return;
+
+    const visible = new Set<Element>();
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) visible.add(e.target);
+          else visible.delete(e.target);
+        }
+        setOverYieldZone(visible.size > 0);
+      },
+      // Any sliver counts: the bar overlaps the bottom of the viewport, so a
+      // partially-visible panel is exactly the case that gets covered.
+      { threshold: 0 },
+    );
+    nodes.forEach((n) => obs.observe(n));
+
+    // Keyboard users can tab into a section that is only partly scrolled into
+    // view; keep the bar away while focus is inside one.
+    const onFocus = () => {
+      const el = document.activeElement;
+      setFocusInYieldZone(Boolean(el && nodes.some((n) => n.contains(el))));
+    };
+    document.addEventListener("focusin", onFocus);
+    document.addEventListener("focusout", onFocus);
+    return () => {
+      obs.disconnect();
+      document.removeEventListener("focusin", onFocus);
+      document.removeEventListener("focusout", onFocus);
+    };
+  }, [yieldKey]);
+
+  const show = pastHero && !nearCta && !dismissed && !overYieldZone && !focusInYieldZone;
 
   return (
     <AnimatePresence>
@@ -59,7 +108,7 @@ export default function StickyCtaBar({
               >
                 {message}
               </span>
-              <Button href={buttonHref} variant="primary" size="sm">{buttonLabel}</Button>
+              <Button href={buttonHref} external={buttonHref.startsWith("http")} variant="primary" size="sm" data-track="book_call_click" data-track-location="sticky-bar">{buttonLabel}</Button>
               <button
                 type="button"
                 onClick={() => setDismissed(true)}

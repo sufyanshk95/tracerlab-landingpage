@@ -89,14 +89,17 @@ button {
 :root {
   color-scheme: dark;
 
-  /* core */
+  /* core — near-black with a faint blue cast, not pure #000 (owner's call
+     2026-09-22: flat black read as "super dark"). The whole dark scale is
+     lifted together so cards, the film scrim and the media stages still sit
+     a step above the page instead of disappearing into it. */
   --tl-ink: #ffffff;
-  --tl-page: #000000;
-  --tl-surface: #0b0b0e;
+  --tl-page: #0c0e13;
+  --tl-surface: #14171e;
 
   /* shared card recipe (Bevel.tsx GLASS_BG/GLASS_BORDER + defaults point here) */
-  --tl-card-bg: linear-gradient(160deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.012) 35%, rgba(255,255,255,0) 70%), rgba(8,9,13,0.8);
-  --tl-card-border: rgba(255,255,255,0.10);
+  --tl-card-bg: linear-gradient(160deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.018) 35%, rgba(255,255,255,0) 70%), rgba(21,24,32,0.82);
+  --tl-card-border: rgba(255,255,255,0.12);
   --tl-card-shadow: none;
 
   /* decorative (per-theme) */
@@ -137,7 +140,7 @@ html[data-theme="light"] {
    !important in style.css. Keep this rule UNLAYERED (never inside @layer) so it stays in
    the same tier as the legacy sheet and wins on specificity regardless of load order. */
 html body {
-  background-color: var(--tl-page, #000);
+  background-color: var(--tl-page, #0c0e13);
 }
 
 /* Generated ambient backdrop imagery is tuned for the dark theme (near-black, low
@@ -621,69 +624,49 @@ html[data-theme="light"] {
      blur on two huge layers (hero + CTA) cost real compositing. */
   background: var(--nt-horizon);
 }
-#tl-hero[data-film="on"] .nt-horizon {
-  animation: none;
-}
-#tl-hero[data-film="on"] .nt-gridfloor::before,
-#tl-hero[data-film="on"] .nt-pulse {
-  animation-play-state: paused; /* invisible under the film — don't animate for nothing */
-}
 
-/* ── Hero film: silent full-bleed loop under the copy (spec 2026-09-18) ──
-   Attached post-idle by HeroFilm.tsx; data-film="on" on #tl-hero while it
-   plays. Fades are opacity-only; the video is a single compositor layer.
-   The scrim is a plain radial gradient (never a filter) that keeps the
-   center column quiet under the headline. */
-.nt-film {
+/* ── Hero film: the OPT-IN introduction (spec 2026-09-18, opt-in 2026-09-23) ──
+   Mounted by HeroFilm.tsx only while the visitor is watching it, so nothing
+   covers or intercepts the page at rest. A fixed full-screen stage above the
+   nav (z-50) and the grain (z-80). The scrim is a plain radial gradient
+   (never a filter) that keeps the film's own captions readable. */
+.nt-film-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--tl-page);
+  animation: ntFilmIn 0.45s ease both;
+}
+@keyframes ntFilmIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.nt-film-video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 1.2s ease;
 }
 .nt-film-scrim {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 1.2s ease;
   background:
-    radial-gradient(ellipse 48% 62% at 50% 46%, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 100%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, transparent 18%, transparent 88%, #000 100%);
+    radial-gradient(ellipse 62% 74% at 50% 46%, rgba(12, 14, 19, 0.35) 0%, rgba(12, 14, 19, 0.12) 55%, transparent 100%),
+    linear-gradient(180deg, rgba(12, 14, 19, 0.45) 0%, transparent 22%, transparent 78%, rgba(12, 14, 19, 0.75) 100%);
 }
 /* Light theme: the same scrim in the page's light grey (--tl-page #eef0f4). */
 html[data-theme="light"] .nt-film-scrim {
   background:
-    radial-gradient(ellipse 48% 62% at 50% 46%, rgba(238, 240, 244, 0.78) 0%, rgba(238, 240, 244, 0.4) 55%, transparent 100%),
-    linear-gradient(180deg, rgba(238, 240, 244, 0.6) 0%, transparent 18%, transparent 88%, #eef0f4 100%);
+    radial-gradient(ellipse 62% 74% at 50% 46%, rgba(238, 240, 244, 0.35) 0%, rgba(238, 240, 244, 0.12) 55%, transparent 100%),
+    linear-gradient(180deg, rgba(238, 240, 244, 0.45) 0%, transparent 22%, transparent 78%, rgba(238, 240, 244, 0.78) 100%);
 }
-#tl-hero[data-film="on"] .nt-film,
-#tl-hero[data-film="on"] .nt-film-scrim {
-  opacity: 1;
-}
-/* Intro: <html data-intro="on"> is set pre-paint by the bootstrap script when the
-   film will play, and cleared by HeroFilm when the first pass completes (or on
-   any input / failure). The copy waits at opacity 0 and the scrim eases off so
-   the film has the whole frame; both come back together. */
-/* Hand-over choreography (from black): the grid-floor scene fades in first
-   (1.2 s, below), the copy follows a beat later, the nav last. */
-#tl-hero .nt-copy {
-  transition: opacity 0.9s ease 0.35s;
-}
-html[data-intro="on"] #tl-hero .nt-copy {
-  opacity: 0;
-  pointer-events: none;
-  transition: none; /* hide instantly whenever this applies (dev injects CSS post-paint); the fade only runs on reveal */
-}
-html[data-intro="on"] #tl-hero[data-film="on"] .nt-film-scrim {
-  opacity: 0.35;
-}
-/* Sound toggle: a quiet glass chip in the corner, only while the intro plays. */
+
+/* Sound toggle: a quiet glass chip in the corner, only while the film plays. */
 .nt-sound {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(12, 14, 19, 0.66);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
   opacity: 0;
   animation: ntSoundIn 0.6s ease 0.4s forwards;
@@ -695,25 +678,6 @@ html[data-theme="light"] .nt-sound {
 @keyframes ntSoundIn {
   to { opacity: 1; }
 }
-/* The nav hides with the copy during the intro (the hero sits under it, so the
-   film fills the viewport) and fades back with it. */
-#tl-nav {
-  transition: opacity 0.9s ease 0.6s;
-}
-html[data-intro="on"] #tl-nav {
-  opacity: 0;
-  pointer-events: none;
-  transition: none;
-}
-#tl-hero .nt-gridfloor,
-#tl-hero .nt-horizon {
-  transition: opacity 1.2s ease;
-}
-#tl-hero[data-film="on"] .nt-gridfloor,
-#tl-hero[data-film="on"] .nt-horizon {
-  opacity: 0;
-}
-
 /* Film grain over the whole page (dark mode only) — the "expensive texture". */
 .nt-grain {
   position: fixed;
