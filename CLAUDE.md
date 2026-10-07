@@ -91,8 +91,11 @@ Components (`app/components/`):
   mono AAC, faststart, in `/public/assets/testimonials/`.
   ⚠️ **ANONYMITY IS LABEL-DEEP ONLY — never call these anonymous.** Audited 2026-09-24: all three
   show the speaker's face full-frame; the mortgage clip has the client's **full name burned into
-  the first ~0–3 s** (the poster was re-cut from t=5 s to avoid it, but playing still reveals it);
-  the meat-processing clip is filmed on the client's premises. Asset filenames previously carried
+  the first ~0–3 s**; the meat-processing clip is filmed on the client's premises.
+  **The owner ACCEPTED the on-screen name (2026-10-06):** a name inside the footage is fine — the
+  rule is about TEXT. No client or company name in copy, labels, filenames, slugs, alt text or
+  structured data. Do not re-edit footage over this, and never let an on-screen name justify
+  publishing that name as text. Asset filenames previously carried
   client/company names and appeared ~10× each in the shipped HTML via Next/Image srcset — they are
   now **role-based**, and must never be named after a person or company again.
   ⚠️ **None has a `.vtt` or transcript** — each carries burned-in on-screen captions, which is NOT

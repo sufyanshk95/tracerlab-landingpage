@@ -5,18 +5,22 @@
 // web in /public/assets/testimonials/ and all PUBLISHED as of 2026-09-25.
 //
 // Attribution is ROLE + TITLE ONLY: the owner does not publish client or
-// company names on these cards, so `name` and `company` are internal reference
-// and must never be rendered. `TestimonialVideo` is deliberately handed a
+// company names AS TEXT anywhere — copy, labels, filenames, slugs, alt text or
+// structured data — so `name` and `company` are internal reference and must
+// never be rendered. A name visible inside the footage itself is acceptable. `TestimonialVideo` is deliberately handed a
 // narrowed prop type so they cannot reach the RSC payload either.
 //
 // ⚠️ ANONYMITY IS LABEL-DEEP ONLY — do not describe these as anonymous.
 // Audited 2026-09-24 against the actual frames:
 //   • All three show the speaker's face, full frame, clearly identifiable.
 //   • mortgage-originator: the client's FULL NAME is burned into the footage as
-//     an on-screen title card over roughly the first 0–3 s. It was also the
-//     poster frame until this audit; the poster now comes from a later frame,
-//     but pressing play still shows the name. Only re-edited footage, or the
-//     client's approval to be named, actually resolves this.
+//     an on-screen title card over roughly the first 0–3 s. ACCEPTED by the
+//     owner (2026-10-06): a name shown inside the footage is fine. The rule is
+//     about TEXT — no client or company name in any copy, label, filename,
+//     slug, alt text or structured data. Do not re-edit the footage over this,
+//     and do not treat the on-screen name as a reason to publish the name in
+//     text anywhere else. (The poster still comes from a later, name-free
+//     frame; that is incidental, not a requirement.)
 //   • meat-processing-ceo: filmed on the client's premises — building, yard and
 //     vehicles are visible, which locates the business.
 //   • Asset filenames used to carry the client and company names and appeared
