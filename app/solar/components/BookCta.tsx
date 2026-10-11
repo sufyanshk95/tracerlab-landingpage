@@ -29,7 +29,7 @@ export default function BookCta() {
           <p className="mt-5 max-w-md text-[1.05rem] leading-relaxed text-sand">
             Answer a few quick questions and we&apos;ll map out exactly how the funnel
             and AI booking agent would work for your company — the same system behind
-            Southern Energy&apos;s pipeline.
+            a Texas solar company&apos;s pipeline.
           </p>
           <ul className="mt-7 space-y-3">
             {BULLETS.map((b) => (

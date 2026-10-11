@@ -3,7 +3,7 @@ import Bevel, { GLASS_BORDER, GLASS_BG } from "../../../components/Bevel";
 import Button from "../../../components/Button";
 import Eyebrow from "../../../components/Eyebrow";
 import { Kinetic, Reveal } from "../../../components/motion";
-import DashboardMockup from "../../voice-agents/_components/DashboardMockup";
+import DashboardMockup from "./DashboardMockup";
 
 const DEMO_URL = "https://crestline-insurance-six.vercel.app";
 const DEMO_PASSWORD = "JQVWgCvzF3wLjlNW0uJ4PQpG";

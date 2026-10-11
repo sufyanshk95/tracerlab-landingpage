@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import Button from "./Button";
+import { track } from "../lib/track";
 
 // In-browser voice agent for the CTA. Click → mint a short-lived token from /api/retell/web-call
 // → start a WebRTC voice call with the Retell agent (lazy-imported, browser-only). The agent runs
@@ -19,8 +20,8 @@ type RetellClient = {
 function BookFallback({ url, note }: { url: string; note?: string }) {
   return (
     <div className="flex flex-col items-center gap-3">
-      <Button href={url} external variant="primary">
-        Book a call
+      <Button href={url} external variant="primary" data-track="book_call_click" data-track-location="voice-fallback">
+        Book a discovery call
       </Button>
       {note && <p className="text-[0.8rem] text-ink/45">{note}</p>}
     </div>
@@ -47,6 +48,7 @@ export default function VoiceWidget({
 
   const start = useCallback(async () => {
     setState("connecting");
+    track("ai_demo_start", { location: "cta" });
 
     // Load the browser SDK FIRST (it's a separate chunk fetch). Minting the ~30s-lived
     // access token before this download could let it expire before startCall runs.
@@ -96,7 +98,9 @@ export default function VoiceWidget({
 
   // ── Unconfigured / failure states → booking fallback ──────────────────
   if (!voiceEnabled) {
-    return <BookFallback url={calcomUrl} />;
+    // Retell isn't provisioned in this environment (env vars are build-time on
+    // Vercel). Say so plainly rather than rendering a dead orb.
+    return <BookFallback url={calcomUrl} note="The live demo isn't available right now — book the call and we'll walk you through the agent on it." />;
   }
   if (state === "denied") {
     return <BookFallback url={calcomUrl} note="Mic access is needed to talk — or just book a call." />;
@@ -116,7 +120,7 @@ export default function VoiceWidget({
         type="button"
         onClick={inCall ? endCall : state === "connecting" ? undefined : start}
         disabled={state === "connecting"}
-        aria-label={inCall ? "End the voice call" : "Talk to our AI"}
+        aria-label={inCall ? "End the demo call" : "Start the AI voice agent demo call"}
         className="group relative flex h-28 w-28 items-center justify-center rounded-full outline-none"
       >
         {/* glow */}
@@ -173,8 +177,8 @@ export default function VoiceWidget({
       <div className="flex flex-col items-center gap-1" aria-live="polite">
         {state === "idle" && (
           <>
-            <span className="text-[1.02rem] font-semibold text-ink">Talk to our AI</span>
-            <span className="text-[0.82rem] text-ink/45">~2 minutes · it books your call</span>
+            <span className="text-[1.02rem] font-semibold text-ink">Start the demo call</span>
+            <span className="text-[0.82rem] text-ink/45">AI voice agent · ~2 minutes · can book your call</span>
           </>
         )}
         {state === "connecting" && <span className="text-[0.95rem] font-medium text-ink/80">Connecting…</span>}

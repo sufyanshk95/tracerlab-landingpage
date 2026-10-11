@@ -5,6 +5,8 @@ import "../globals.css";
 import { Archivo, Plus_Jakarta_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import ScrollProgress from "../components/ScrollProgress";
+import Analytics from "../components/Analytics";
+import { SITE_URL } from "../lib/site";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -30,21 +32,17 @@ const duborics = localFont({
   weight: "400",
 });
 
+const TITLE = "AI Marketing, Custom CRM & Business Automation | Tracerlabs";
+const DESCRIPTION =
+  "Tracerlabs connects lead generation, AI follow-up, scheduling, operations, invoicing, payments, and payroll through custom CRMs built around your SOPs.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://tracerlabs.io"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Tracerlabs | AI Development Agency",
+    default: TITLE,
     template: "%s | Tracerlabs",
   },
-  description:
-    "Transform your business with AI-powered digital solutions. We build cutting-edge web and mobile applications that drive real business results.",
-  keywords: [
-    "AI development",
-    "web development",
-    "mobile apps",
-    "business automation",
-    "digital transformation",
-  ],
+  description: DESCRIPTION,
   alternates: { canonical: "/" },
   icons: {
     icon: "/assets/favicon.ico",
@@ -52,18 +50,16 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    url: "https://tracerlabs.io",
+    url: SITE_URL,
     siteName: "Tracerlabs",
     locale: "en_US",
-    title: "Tracerlabs | AI Development Agency",
-    description:
-      "Transform your business with AI-powered digital solutions. We build cutting-edge web and mobile applications that drive real business results.",
+    title: TITLE,
+    description: DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tracerlabs | AI Development Agency",
-    description:
-      "Transform your business with AI-powered digital solutions. We build cutting-edge web and mobile applications that drive real business results.",
+    title: TITLE,
+    description: DESCRIPTION,
   },
 };
 
@@ -85,6 +81,7 @@ export default function TracerlabsLayout({
       }
     >
       <ScrollProgress />
+      <Analytics />
       {children}
       {/* film grain over everything, dark mode only (globals .nt-grain) */}
       <div aria-hidden className="nt-grain" />

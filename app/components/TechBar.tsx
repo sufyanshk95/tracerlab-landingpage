@@ -14,9 +14,13 @@ const LOGOS = [
   { src: "/assets/crew-ai.png", alt: "CrewAI" },
 ];
 
+// Label is deliberate: these are tools we build with, not clients or endorsers.
 export default function TechBar() {
   return (
-    <div className="relative w-full overflow-hidden border-y border-ink/[0.07] bg-page py-7">
+    <div className="relative w-full overflow-hidden border-y border-ink/[0.07] bg-page py-7" aria-label="Technologies we build with">
+      <p className="mx-auto mb-4 max-w-[1280px] px-6 text-center text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-ink/40 sm:px-10">
+        Technologies we build with
+      </p>
       {/* edge fades */}
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-page to-transparent sm:w-28" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-page to-transparent sm:w-28" />

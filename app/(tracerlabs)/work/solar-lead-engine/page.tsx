@@ -4,29 +4,63 @@ import Footer from "../../../components/Footer";
 import Card from "../../../components/Card";
 import Button from "../../../components/Button";
 import CaseHeader from "../../../components/CaseHeader";
-import RateChart from "../../../components/RateChart";
+import SolarFollowUp from "../../../components/SolarFollowUp";
+import {
+  AD_SPEND_DISPLAY,
+  AD_WINDOW,
+  BOOKING_RECORDS,
+  CALC_PROFIT,
+  COST_PER_CLOSED_DEAL,
+  COST_PER_LEAD,
+  EST_REVENUE_SHORT,
+  EST_ROAS,
+  LEAD_TO_SALE,
+  PROFIT_METHOD,
+  REVENUE_METHOD,
+  SOLAR,
+  money,
+} from "../../../lib/solarResults";
+import { CaseStudyJsonLd } from "../../../components/JsonLd";
+import { SITE_URL } from "../../../lib/site";
 
 // Case study: the solar lead engine (client anonymized). Pilot page for the
 // "Telemetry" redesign: data is the hero, chrome is quiet. Headings in Archivo
 // (Duborics stays in the logo only), no scroll-reveal gating (content visible
 // by default), the brand gradient appears exactly once (the hero number), and
 // results render as real figures — including an actual chart of the monthly
-// booking rate. All numbers from the live funnel's production data
-// (Redis funnel events + GHL calendar, 2026-04 → 2026-09).
+// 2026-09-24 — figures rebuilt around CLOSED DEALS (supersedes the booking-led
+// version). All inputs and derived values come from app/lib/solarResults.ts,
+// which is unit-tested; never type a solar figure by hand here.
+//
+// Sources, kept distinct on the page:
+//   • advertising spend + window — supplied Meta Ads Manager screenshot;
+//   • leads, closed deals, the 158/397 follow-up cohort, revenue and profit
+//     per deal — owner-reported;
+//   • every rate, ratio and total — calculated from those inputs.
+//
+// WITHHELD until booking records are deduplicated (the owner states the 420 and
+// 578 counts include duplicates and reschedules): 70.7% overall lead-to-booking,
+// 51.4% direct funnel rate, $85.69 per unique booked appointment, 37.6%
+// additional-appointment lift, 239 remaining unbooked leads, and any diagram
+// that partitions all 817 leads. The recorded counts appear ONLY in the
+// methodology section, labelled as recorded booking counts.
+//
+// Also NOT comparable: a separate screenshot's 374 Meta-attributed scheduled
+// appointments. Different attribution basis — do not substitute one for the other.
 
 export const metadata: Metadata = {
-  title: "Case Study: A Solar Lead Engine",
+  title: "Case Study: A Solar Lead Engine — 124 Closed Deals from 817 Leads",
   description:
-    "367 solar consultations booked, a lead-to-appointment rate that doubled after the AI texting agent launched, and a 94% show rate. How we fixed fake numbers, cold leads, and no-shows for a Texas solar company.",
+    "A connected advertising, funnel and AI follow-up system supported 124 closed deals from 817 owner-reported leads for a Texas solar company. AI text follow-up converted 158 of 397 initially unbooked leads into bookings; the client's sales team closed the deals.",
   alternates: { canonical: "/work/solar-lead-engine" },
   openGraph: {
     type: "article",
-    url: "https://tracerlabs.io/work/solar-lead-engine",
+    url: `${SITE_URL}/work/solar-lead-engine`,
     siteName: "Tracerlabs",
     locale: "en_US",
     title: "Case Study: A Solar Lead Engine | Tracerlabs",
     description:
-      "367 consults booked, booking rate doubled by AI texting, 94% show rate — the full problem → solution → results story.",
+      "124 closed deals from 817 solar leads. AI text follow-up converted 158 of 397 initially unbooked leads into bookings; the client's sales team closed the deals.",
   },
 };
 
@@ -36,6 +70,8 @@ const SECTIONS = [
   { id: "lead-quality", n: "2", nav: "Fake numbers" },
   { id: "speed", n: "3", nav: "Cold leads" },
   { id: "show-rate", n: "4", nav: "No-shows" },
+  { id: "revenue", n: "5", nav: "Revenue impact" },
+  { id: "scope", n: "6", nav: "Sources & limits" },
 ] as const;
 
 function RunIn({ label, children }: { label: string; children: React.ReactNode }) {
@@ -95,7 +131,7 @@ function Scenario({
         {title}
       </h2>
       {img && (
-        <div aria-hidden className="relative mt-6 aspect-[21/9] w-full max-w-[42rem] overflow-hidden bg-[#0b0b0f]">
+        <div aria-hidden className="relative mt-6 aspect-[21/9] w-full max-w-[42rem] overflow-hidden bg-[#07090d]">
           <Image src={img} alt="" fill sizes="(max-width: 700px) 100vw, 42rem" className="object-cover" loading="lazy" />
         </div>
       )}
@@ -107,40 +143,49 @@ function Scenario({
 export default function SolarCaseStudy() {
   return (
     <div>
+      <CaseStudyJsonLd
+        slug="solar-lead-engine"
+        name="Case study: a solar lead engine"
+        headline={`Case study: a solar lead engine — ${SOLAR.closedDeals} closed deals from ${SOLAR.totalLeads} leads`}
+        description="How a connected advertising, funnel and AI follow-up system supported closed deals for a residential solar company, with the sources and limits of every figure."
+        about="Lead generation and AI appointment booking for a residential solar company in Texas"
+        dateModified="2026-09-25"
+      />
       <CaseHeader />
       <main className="font-body w-full bg-page text-ink">
         {/* Header */}
         <header className="mx-auto w-full max-w-[1060px] px-6 pt-16 sm:px-10 sm:pt-20">
-          <p className="text-[0.95rem] text-ink/50">Case study — solar, Texas</p>
+          <p className="text-[0.95rem] text-ink/50">Case study — solar, Texas · measured outcomes</p>
           <h1
             className="mt-4 max-w-[17ch] text-[clamp(2.1rem,5vw,3.4rem)] font-extrabold leading-[1.06] tracking-tight text-ink"
             style={{ fontFamily: DISPLAY }}
           >
-            The lead engine that books solar consults on autopilot.
+            {SOLAR.closedDeals} closed deals from {SOLAR.totalLeads} solar leads.
           </h1>
           <p className="mt-6 max-w-[44rem] text-[1.12rem] leading-[1.7] text-ink/60">
-            A Texas solar company needed consultations, not click reports. We run
-            the whole engine — the ads, the funnel, and the AI agents that verify,
-            engage, and book every lead. Four problems stood between their ad
-            spend and their calendar. Here is how each one fell.
+            A connected advertising, funnel, and AI follow-up system supported{" "}
+            {SOLAR.closedDeals} closed deals from {SOLAR.totalLeads} leads. AI text
+            follow-up converted {SOLAR.followUpConverted} of {SOLAR.initiallyUnbooked}{" "}
+            initially unbooked leads into bookings, while the client&rsquo;s sales team
+            handled consultations and closed the deals.
           </p>
 
-          {/* Hero figure — the page's single gradient moment */}
+          {/* Hero figures — the page's single gradient moment */}
           <div className="mt-12 flex flex-wrap items-end gap-x-12 gap-y-8 border-y border-ink/10 py-8">
             <div>
               <div
                 className="bg-gradient-to-r from-brand-pink to-brand-blue bg-clip-text text-[clamp(4rem,9vw,6.5rem)] font-extrabold leading-none tracking-tight text-transparent"
                 style={{ fontFamily: DISPLAY }}
               >
-                367
+                {SOLAR.closedDeals}
               </div>
-              <div className="mt-2 text-[1rem] text-ink/60">consultations booked</div>
+              <div className="mt-2 text-[1rem] text-ink/60">closed deals (owner-reported)</div>
             </div>
             <dl className="flex flex-wrap gap-x-10 gap-y-5 pb-1">
               {[
-                ["50%", "of leads book a consult"],
-                ["94%", "appointment show rate"],
-                ["≈$96", "ad spend per booked consult"],
+                [String(SOLAR.totalLeads), "leads (owner-reported)"],
+                [String(SOLAR.followUpConverted), "initially unbooked leads converted through AI follow-up"],
+                [`${LEAD_TO_SALE}%`, "lead-to-sale conversion (calculated)"],
               ].map(([v, l]) => (
                 <div key={l}>
                   <dt className="sr-only">{l}</dt>
@@ -148,12 +193,20 @@ export default function SolarCaseStudy() {
                     <span className="text-[1.6rem] font-bold tracking-tight text-ink" style={{ fontFamily: DISPLAY }}>
                       {v}
                     </span>
-                    <span className="mt-1 block max-w-[11rem] text-[0.88rem] leading-snug text-ink/55">{l}</span>
+                    <span className="mt-1 block max-w-[13rem] text-[0.88rem] leading-snug text-ink/55">{l}</span>
                   </dd>
                 </div>
               ))}
             </dl>
           </div>
+
+
+          <p className="mt-5 max-w-[44rem] text-[0.85rem] leading-relaxed text-ink/45">
+            Lead and sales figures are owner-reported; advertising spend and its reporting
+            window come from the client&rsquo;s Meta Ads Manager. Rates are calculated from
+            those inputs. Closed deals were produced by the whole system — advertising,
+            funnel, follow-up and the client&rsquo;s sales team — not by the AI agent alone.
+          </p>
         </header>
 
         {/* Body: sticky index + content */}
@@ -218,9 +271,10 @@ export default function SolarCaseStudy() {
                 admin text, nowhere.
               </RunIn>
               <Result figure="1 in 5 → 0">
-                Fake numbers reaching the sales team. Every lead is now a verified,
-                reachable human — the wrong-number call reports stopped, and the ad
-                account optimizes on real people instead of fake form fills.
+                Unverified numbers reaching the CRM. New leads must complete SMS
+                verification before entering the CRM — the wrong-number call reports
+                stopped, and the ad account optimizes on verified submissions rather
+                than fake form fills.
               </Result>
             </Scenario>
 
@@ -228,8 +282,8 @@ export default function SolarCaseStudy() {
               <RunIn label="The problem">
                 Solar leads decay by the hour. Leads waited hours — sometimes days —
                 for a callback, and by then they&apos;d filled out three
-                competitors&apos; forms. In April, only 20% of captured leads ever
-                became a booked consultation.
+                competitors&apos; forms. Hundreds of leads never booked a time through
+                the funnel itself.
               </RunIn>
               <RunIn label="What we did">
                 An AI texting agent that opens the conversation within about two
@@ -238,20 +292,21 @@ export default function SolarCaseStudy() {
                 around the clock. No lead sits in an inbox waiting for the office to
                 open.
               </RunIn>
-              <Result figure="20% → 50%" chart={<RateChart />}>
-                The lead-to-consultation rate roughly doubled in the months after
-                the agent launched, and has held near 50% even after the phone gate
-                made every lead count. That&apos;s 367 consultations booked to date —
-                about 2 a day, on autopilot.
+              <Result figure="The leads the funnel had already lost">
+                Instead of writing those leads off, the agent reopened the conversation:
+                it answered their first questions, found a time that worked and booked it
+                straight into the sales calendar. The client&rsquo;s sales team ran the
+                consultations that followed.
               </Result>
+              <SolarFollowUp />
             </Scenario>
 
             <Scenario id="show-rate" n="4" title="No-shows" img="/assets/work-solar-shows.jpg">
               <RunIn label="The problem">
                 People book in good faith, then life happens — plans change, work
                 runs late, and a sales rep burns an hour on someone who was never
-                going to pick up. In this industry, no-show rates of 30–50% are
-                normal.
+                going to pick up. Every unattended slot is ad spend and rep time
+                that produced nothing.
               </RunIn>
               <RunIn label="What we did">
                 A confirmation agent that reminds every prospect before their
@@ -259,10 +314,12 @@ export default function SolarCaseStudy() {
                 there in the chat. The rep&apos;s slot gets freed and rebooked
                 instead of silently wasted.
               </RunIn>
-              <Result figure="94% show rate">
-                Of 487 appointments on the calendar, only 28 ended as no-shows —
-                fewer than 1 in 15. The reminder alone is often enough: people show
-                up to appointments they were reminded of.
+              <Result figure="Reminders and self-serve rescheduling">
+                Every prospect is reminded before their appointment, and a change of
+                plan becomes a reschedule in the same thread instead of an empty slot.
+                We publish no attendance or show-rate figure for this engagement:
+                attendance needs its own records, and a booking that was not marked
+                as a no-show is not evidence that someone attended.
               </Result>
             </Scenario>
 
@@ -272,16 +329,102 @@ export default function SolarCaseStudy() {
                 className="text-[clamp(1.5rem,3vw,2rem)] font-bold leading-tight tracking-tight text-ink"
                 style={{ fontFamily: DISPLAY }}
               >
-                One system, from ad click to sat appointment
+                One system, from ad click to closed deal
               </h2>
               <p className="mt-5 max-w-[42rem] text-[1.04rem] leading-[1.75] text-ink/62">
-                Over 12,000 funnel visitors. 766 leads captured — every recent one
-                SMS-verified. 367 consultations booked, averaging under $100 in ad
-                spend per booked consult across the campaign. The funnel, the
-                texting agent, the confirmation agent, and the tracking all run as
-                one system — which is why each piece makes the others better:
-                verified leads make the ads smarter, instant follow-up makes the
-                leads warmer, and reminders make the appointments real.
+                {SOLAR.totalLeads} leads — every recent one SMS-verified — produced{" "}
+                {SOLAR.closedDeals} closed deals, a {LEAD_TO_SALE}% lead-to-sale rate. The ads,
+                the funnel, the verification gate, the texting agent and the confirmation agent
+                run as one system, and the client&rsquo;s sales team closed the business: verified
+                leads make the ads smarter, fast follow-up catches the leads the funnel missed,
+                and reminders protect the slots that get booked.
+              </p>
+            </section>
+
+            {/* Estimated revenue impact */}
+            <section id="revenue" className="scroll-mt-28 border-t border-ink/10 py-12 sm:py-14">
+              <h2
+                className="text-[clamp(1.5rem,3vw,2rem)] font-bold leading-tight tracking-tight text-ink"
+                style={{ fontFamily: DISPLAY }}
+              >
+                <span className="mr-3 text-ink/30">5</span>
+                Estimated revenue impact
+              </h2>
+              <dl className="mt-7 flex max-w-[42rem] flex-wrap gap-x-10 gap-y-6 border-l-2 pl-6" style={{ borderColor: "var(--tl-accent-text)" }}>
+                {[
+                  [EST_REVENUE_SHORT, "estimated revenue"],
+                  [`${EST_ROAS}×`, "estimated ROAS"],
+                  [`$${COST_PER_CLOSED_DEAL}`, "advertising cost per closed deal"],
+                ].map(([v, l]) => (
+                  <div key={l}>
+                    <dt className="sr-only">{l}</dt>
+                    <dd>
+                      <span
+                        className="nt-figure block text-[2.1rem] font-bold leading-none tracking-tight"
+                        style={{ fontFamily: DISPLAY, color: "var(--tl-accent-text)" }}
+                      >
+                        {v}
+                      </span>
+                      <span className="mt-2 block max-w-[13rem] text-[0.9rem] leading-snug text-ink/60">{l}</span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-6 max-w-[42rem] text-[0.92rem] leading-[1.7] text-ink/50">
+                {REVENUE_METHOD}
+              </p>
+            </section>
+
+            {/* Profit — kept separate from revenue and ROAS */}
+            <section className="border-t border-ink/10 py-12 sm:py-14">
+              <h2
+                className="text-[clamp(1.5rem,3vw,2rem)] font-bold leading-tight tracking-tight text-ink"
+                style={{ fontFamily: DISPLAY }}
+              >
+                Calculated profit after advertising
+              </h2>
+              <div className="mt-7 max-w-[42rem] border-l-2 pl-6" style={{ borderColor: "var(--tl-accent-text)" }}>
+                <div
+                  className="nt-figure text-[2.1rem] font-bold leading-none tracking-tight"
+                  style={{ fontFamily: DISPLAY, color: "var(--tl-accent-text)" }}
+                >
+                  {money(CALC_PROFIT)}
+                </div>
+                <p className="mt-3 text-[1rem] leading-[1.7] text-ink/70">calculated profit after advertising</p>
+              </div>
+              <p className="mt-6 max-w-[42rem] text-[0.92rem] leading-[1.7] text-ink/50">{PROFIT_METHOD}</p>
+            </section>
+
+            {/* Scope, definitions, people, limitations */}
+            <section id="scope" className="scroll-mt-28 border-t border-ink/10 py-12 sm:py-14">
+              <h2
+                className="text-[clamp(1.5rem,3vw,2rem)] font-bold leading-tight tracking-tight text-ink"
+                style={{ fontFamily: DISPLAY }}
+              >
+                <span className="mr-3 text-ink/30">6</span>
+                Sources, definitions and limits
+              </h2>
+              <dl className="mt-6 flex max-w-[42rem] flex-col gap-5">
+                {[
+                  ["Advertising spend", `${AD_SPEND_DISPLAY} over ${AD_WINDOW}, from the client's Meta Ads Manager. The owner confirms this spend covers the ${SOLAR.totalLeads}-lead population — ${"$"}${COST_PER_LEAD} per lead.`],
+                  ["Owner-reported", `Leads (${SOLAR.totalLeads}), closed deals (${SOLAR.closedDeals}), the follow-up cohort (${SOLAR.followUpConverted} of ${SOLAR.initiallyUnbooked}), and averages of $30,000 revenue and $7,000 profit per closed deal. Not independently reconciled.`],
+                  ["Calculated", "Every rate and total here — lead-to-sale, follow-up conversion, cost per lead and per closed deal, estimated revenue, ROAS and profit — is derived from the inputs above."],
+                  ["Estimates", "Revenue and profit are calculated from average deal value, not reconciled transaction totals. ROAS compares revenue with advertising spend and does not measure profit. Results are specific to this client, market and offer, and are not a guarantee."],
+                  ["Recorded booking counts", `The funnel recorded ${BOOKING_RECORDS.direct} direct bookings and ${BOOKING_RECORDS.combined} combined booking records. These may include duplicates and reschedules, so they are not presented as unique appointments or unique booked leads, and no rate or cost figure here uses them as a denominator.`],
+                  ["Attribution", "A separate campaign view in Meta shows 374 Meta-attributed scheduled appointments — a different attribution basis from the combined funnel and CRM records, and not directly comparable with them."],
+                  ["Not established", "Attendance or show rates; whether the reported revenue is contracted or collected; whether every closed deal fell inside the advertising reporting window; and deduplicated booking totals."],
+                ].map(([k, v]) => (
+                  <div key={k} className="grid grid-cols-1 gap-1 sm:grid-cols-[12rem_1fr] sm:gap-4">
+                    <dt className="text-[0.95rem] font-semibold text-ink" style={{ fontFamily: DISPLAY }}>{k}</dt>
+                    <dd className="m-0 text-[0.98rem] leading-[1.7] text-ink/62">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-6 text-[0.92rem] text-ink/50">
+                Related services:{" "}
+                <a href="/services/lead-generation" className="font-semibold text-ink/70 underline decoration-ink/25 underline-offset-4 hover:text-ink">lead generation &amp; funnels</a>
+                {" · "}
+                <a href="/services/ai-appointment-booking" className="font-semibold text-ink/70 underline decoration-ink/25 underline-offset-4 hover:text-ink">AI follow-up &amp; appointment booking</a>
               </p>
             </section>
 
@@ -296,12 +439,12 @@ export default function SolarCaseStudy() {
                     Have the same problems?
                   </h2>
                   <p className="mt-2 max-w-[30rem] text-[0.95rem] text-ink/55">
-                    Fake numbers, cold leads, and no-shows are fixable. We&apos;ll
-                    build the engine that fixes them.
+                    Fake numbers, cold leads, and no-shows are measurable and
+                    fixable. Start with a discovery call.
                   </p>
                 </div>
                 <Button href="/#contact" variant="primary">
-                  Start your project
+                  Book a discovery call
                 </Button>
               </Card>
             </section>

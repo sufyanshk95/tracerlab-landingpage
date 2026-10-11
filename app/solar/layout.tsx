@@ -15,23 +15,23 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://tracerlabs.io"),
-  title: "Solar Appointments on Autopilot — Without a Door-to-Door Team | Tracerlabs",
+  metadataBase: new URL("https://www.tracerlabs.io"),
+  title: "Solar Appointments Booked by an AI Agent — Without a Door-to-Door Team | Tracerlabs",
   description:
-    "We build solar companies a high-converting funnel and an AI agent that books qualified homeowners straight onto your calendar — the same system filling Southern Energy's pipeline.",
+    "We build solar companies a high-converting funnel and an AI agent that books qualified homeowners straight onto your calendar — the same system booking consultations for a Texas solar company.",
   alternates: { canonical: "/solar" },
   openGraph: {
     type: "website",
-    url: "https://tracerlabs.io/solar",
+    url: "https://www.tracerlabs.io/solar",
     siteName: "Tracerlabs",
     locale: "en_US",
-    title: "Solar Appointments on Autopilot — Without a Door-to-Door Team",
+    title: "Solar Appointments Booked by an AI Agent — Without a Door-to-Door Team",
     description:
       "A done-for-you funnel + AI booking agent that fills your calendar with qualified solar appointments.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Solar Appointments on Autopilot — Without a Door-to-Door Team",
+    title: "Solar Appointments Booked by an AI Agent — Without a Door-to-Door Team",
     description:
       "A done-for-you funnel + AI booking agent that fills your calendar with qualified solar appointments.",
   },

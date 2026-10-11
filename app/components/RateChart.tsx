@@ -1,6 +1,11 @@
+// ⚠️ UNPUBLISHED 2026-09-23, still unpublished — UNMOUNTED.
 // Monthly lead → booked-consult rate for the solar engine, from the production
-// Redis leads list (updated 2026-09). Shared between the /work/solar-lead-engine
-// case study and the homepage telemetry panel (`compact`).
+// Redis leads list. It is withheld because its DEFINITION is unclear, not
+// because it is arithmetically impossible: the denominator behind these monthly
+// values, and which booking sources they counted, are undocumented, so they
+// cannot be shown alongside the current closed-deal figures without inviting a
+// false comparison. Restore only once the period, denominator and source are
+// documented. Do not invent a reconciliation.
 // Static editorial figure: one series, one hue; the agent-launch annotation
 // carries the before/after story, values are direct-labeled.
 

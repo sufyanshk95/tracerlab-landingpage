@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
   openGraph: {
     type: "website",
-    url: "https://tracerlabs.io/solrite",
+    url: "https://www.tracerlabs.io/solrite",
     siteName: "Tracerlabs",
     locale: "en_US",
     title: "Closing the Loop on Meta Lead Ads | Tracerlabs × Solrite",

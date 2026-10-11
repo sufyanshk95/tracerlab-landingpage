@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import Bevel, { GLASS_BG, GLASS_BORDER } from "../../../components/Bevel";
 import Button from "../../../components/Button";
 import { AD_SPEND, BUSINESS_TYPES, LEAD_ENDPOINT } from "../config";
+import { track } from "../../../lib/track";
 
 // The form card: the page's single conversion point. Five fields (minimum viable
 // qualification), inline validation on blur, lead-source hidden fields captured
@@ -116,8 +117,9 @@ export default function LeadForm() {
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok || !json.ok) throw new Error(json.error || "Something went wrong.");
-      // REPLACE: fire conversion on success, e.g. fbq('track','Lead') + CAPI event with matching event_id
-      // REPLACE: or redirect to a thank-you page URL (preferred for tracking)
+      // Conversion: forwarded to whichever tag is installed (see app/lib/track.ts).
+      // A server-side CAPI event with a matching event_id is still a TODO for the owner.
+      track("contact_submit", { form: "growth-audit" });
       setStatus("success");
     } catch (err) {
       setServerError(err instanceof Error ? err.message : "Something went wrong.");

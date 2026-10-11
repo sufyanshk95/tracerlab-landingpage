@@ -1,15 +1,16 @@
 // Homepage hero — copy only, centered: the headline IS the hero, staged on
-// the grid-floor scene with nothing competing for attention. Every line
-// fades/rises in on a stagger (animate-rise) — no typewriter. The
-// real client numbers live in the case studies below (/work/*); TelemetryPanel
-// and MachinePanel are kept on disk if a side visual is ever wanted back.
-// Backdrop = the hero film (HeroFilm, spec 2026-09-18); the grid-floor scene
-// is its fallback state. Still no scroll-reveal gating.
+// the grid-floor scene. Every line fades/rises in on a CSS stagger
+// (animate-rise).
+//
+// The film is OPT-IN (2026-09-23): nothing is requested or covered until the
+// visitor presses "Watch introduction" beside the CTAs. The headline, nav and
+// both CTAs are plain server HTML, usable from the first paint, and every
+// failure path in HeroFilm returns the page exactly as it was.
+// TelemetryPanel and MachinePanel are kept on disk if a side visual is ever
+// wanted back.
 import Button from "./Button";
 import HeroFilm from "./HeroFilm";
-import HeroCopy from "./HeroCopy";
-
-const DISPLAY = "var(--font-archivo), system-ui, sans-serif";
+import { BOOKING_URL } from "../lib/site";
 
 export default function Hero() {
   return (
@@ -44,40 +45,43 @@ export default function Hero() {
         <span className="nt-pulse" style={{ left: 1012, ["--pulse-dur" as string]: "10s", ["--pulse-delay" as string]: "0s" }} />
         <span className="nt-pulse nt-pulse-pink" style={{ left: 1380, ["--pulse-dur" as string]: "17s", ["--pulse-delay" as string]: "7.5s" }} />
       </div>
-      <HeroFilm />
+
       {/* The section starts UNDER the sticky nav (-mt-16 + pt-16 here) so the film
           can own the whole viewport while the nav is hidden during the intro. */}
-      <div className="mx-auto flex min-h-[100dvh] w-full max-w-[1280px] items-center justify-center px-6 pb-10 pt-16 sm:px-10 sm:pb-12">
-        <HeroCopy className="flex min-w-0 max-w-[52rem] flex-col items-center text-center">
-          <p className="animate-rise text-[0.98rem] text-ink/50">Tracerlabs — AI development studio</p>
+      <div className="mx-auto flex min-h-[100dvh] w-full max-w-[1280px] items-center justify-center px-6 pb-14 pt-16 sm:px-10 sm:pb-16">
+        <div className="flex min-w-0 max-w-[54rem] flex-col items-center text-center">
+          <p className="animate-rise text-[0.8rem] font-semibold uppercase tracking-[0.22em] text-ink/55">AI growth &amp; operations</p>
           <h1
-            className="animate-rise mt-5 text-[clamp(2rem,min(4.8vw,7vh),3.9rem)] font-normal uppercase leading-[1.1] tracking-tight"
+            className="animate-rise mt-5 text-[clamp(2rem,min(4.6vw,7vh),3.8rem)] font-normal uppercase leading-[1.1] tracking-tight"
             style={{ fontFamily: "var(--font-duborics), var(--font-archivo), sans-serif", animationDelay: "0.08s" }}
           >
-            <span className="nt-sheen">We build the machine that grows your business.</span>
+            Generate demand. Automate operations.{" "}
+            <span className="nt-sheen">Run it all in one place.</span>
           </h1>
-          <p className="animate-rise mt-6 max-w-[38rem] text-[1.1rem] leading-[1.65] text-ink/60" style={{ animationDelay: "0.18s" }}>
-            Ads in, booked jobs out. Funnels, AI follow-up, booking systems,
-            and the software to run it all — measured end to end, built and
-            run by one team.
+          <p className="animate-rise mt-6 max-w-[42rem] text-[1.1rem] leading-[1.65] text-ink/62" style={{ animationDelay: "0.18s" }}>
+            We generate leads and connect your sales, scheduling, operations, and
+            payments through AI systems built around your SOPs&mdash;with one custom
+            CRM to oversee it all.
           </p>
 
           <div className="animate-rise mt-8 flex flex-wrap items-center justify-center gap-4" style={{ animationDelay: "0.26s" }}>
-            <Button href="#contact" variant="primary" size="lg">
+            <Button href={BOOKING_URL} external variant="primary" size="lg" data-track="book_call_click" data-track-location="hero">
               Book a discovery call
             </Button>
             <Button href="#tl-projects" variant="secondary" size="lg">
-              See the case studies
+              Explore client results
             </Button>
           </div>
 
-          {/* Real proof, in words — replaces the old stock-avatar rating widget */}
-          <p className="animate-rise mt-9 max-w-[34rem] border-t border-ink/10 pt-5 text-[0.92rem] leading-relaxed text-ink/55" style={{ animationDelay: "0.36s" }}>
-            Solar companies, meat processors, and local service businesses run
-            on systems we built. Every number in the case studies below is
-            live production data.
+          <div className="animate-rise mt-6" style={{ animationDelay: "0.3s" }}>
+            <HeroFilm />
+          </div>
+
+          <p className="animate-rise mt-9 max-w-[36rem] border-t border-ink/10 pt-5 text-[0.92rem] leading-relaxed text-ink/55" style={{ animationDelay: "0.4s" }}>
+            Working with solar companies, a meat-processing farm, home-service
+            businesses and med spas.
           </p>
-        </HeroCopy>
+        </div>
       </div>
     </section>
   );

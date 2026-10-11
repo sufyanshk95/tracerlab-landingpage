@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/growth-audit" },
   openGraph: {
     type: "website",
-    url: "https://tracerlabs.io/growth-audit",
+    url: "https://www.tracerlabs.io/growth-audit",
     siteName: "Tracerlabs",
     locale: "en_US",
     title: "Stop Paying for Leads Your Team Never Calls Back | Tracerlabs",

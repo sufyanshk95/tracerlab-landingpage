@@ -73,7 +73,7 @@ export default function Hero() {
             We build you a high-converting funnel and an AI agent that books
             qualified homeowners straight onto your calendar — the same system
             quietly filling{" "}
-            <span className="font-semibold text-cream">Southern Energy&apos;s</span>{" "}
+            <span className="font-semibold text-cream">a Texas solar company&apos;s</span>{" "}
             pipeline.
           </p>
 

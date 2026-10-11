@@ -148,6 +148,10 @@ export async function POST(req: Request) {
   }
 
   if (startISO && (await calBook(startISO, args, target))) {
+    // Measurement: a CONFIRMED appointment (Cal.com accepted the booking) — the only
+    // place the site can reliably observe one. Structured line for Vercel's log
+    // drain / search; no PII beyond what the booking already holds.
+    console.log(JSON.stringify({ event: "appointment_booked", source: "voice-agent", start: startISO, at: new Date().toISOString() }));
     return new Response(`Perfect — you're booked for ${fmt(startISO, tz)}. A calendar invite is on its way to ${args.email}.`, {
       headers: { "content-type": "text/plain" },
     });

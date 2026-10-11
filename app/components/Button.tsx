@@ -23,6 +23,9 @@ type Props = {
   disabled?: boolean;
   className?: string;
   "aria-label"?: string;
+  // Analytics hooks (see app/components/Analytics.tsx) — forwarded verbatim.
+  "data-track"?: string;
+  "data-track-location"?: string;
 };
 
 export default function Button({

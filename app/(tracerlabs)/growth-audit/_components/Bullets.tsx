@@ -11,8 +11,8 @@ const BULLETS = [
     body: "Every lead is tracked from the ad it came from to the slot on your calendar, so you know exactly what each dollar bought.",
   },
   {
-    title: "Leads get answered in minutes, and they show up.",
-    body: "AI texts every lead right away, books them, and reminds them. Our clients see a 94% show rate.",
+    title: "Leads get answered in minutes, and reminded before the appointment.",
+    body: "An AI text agent replies within minutes, books the appointment, and sends reminders with self-serve rescheduling so fewer slots are wasted.",
   },
   {
     title: "No new vendor to babysit.",

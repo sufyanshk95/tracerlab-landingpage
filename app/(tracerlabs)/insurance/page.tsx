@@ -15,9 +15,13 @@ export const metadata: Metadata = {
   description:
     "A done-for-you AI voice agent that answers every call — quoting prospects and supporting existing clients 24/7 — with a live owner dashboard. See it live, plus pricing.",
   alternates: { canonical: "/insurance" },
+  // Proposal deck for outreach (same treatment as /gnrg and /solrite): reachable
+  // by link, kept out of the index — its figures are owner-reported, not the
+  // documented case-study numbers.
+  robots: { index: false, follow: false },
   openGraph: {
     type: "website",
-    url: "https://tracerlabs.io/insurance",
+    url: "https://www.tracerlabs.io/insurance",
     siteName: "Tracerlabs",
     locale: "en_US",
     title: "AI Voice Agents for Insurance Agencies | Tracerlabs",

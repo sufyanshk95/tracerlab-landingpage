@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
   openGraph: {
     type: "website",
-    url: "https://tracerlabs.io/gnrg",
+    url: "https://www.tracerlabs.io/gnrg",
     siteName: "Tracerlabs",
     locale: "en_US",
     title: "Solar Growth Engine for GNRG | Tracerlabs",

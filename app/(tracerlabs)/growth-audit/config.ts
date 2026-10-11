@@ -33,16 +33,21 @@ export const TERMS_URL = "/";
 export const BUSINESS_TYPES = ["Solar", "HVAC", "Roofing", "Other home service"] as const;
 export const AD_SPEND = ["Not running ads yet", "Under $2K", "$2K–$5K", "$5K+"] as const;
 
-/** Headline proof stats. Cost/consult/show figures come from the solar portfolio. */
+/** Headline proof stats. STATISTICS AND THEIR SOURCE NOTE ONLY were updated
+ *  (2026-09-23, again 2026-09-24) to match the owner's revised solar figures in
+ *  app/lib/solarResults.ts — the page's design, structure, offer and layout are
+ *  deliberately untouched. Superseded here: 367 consultations / 766 leads /
+ *  ≈$96 / 20%→40–58% monthly, then 578 bookings / 70.7% (recorded booking counts
+ *  are not deduplicated, so they are no longer presented as unique conversions). */
 export const STATS: { value: string; label: string }[] = [
-  { value: "$5M+", label: "revenue generated for clients" },
-  { value: "$40–52", label: "per booked appointment" },
-  { value: "2×", label: "lead-to-consult rate" },
-  { value: "94%", label: "appointment show rate" },
+  { value: "$40–$52", label: "per booked appointment" },
+  { value: "124", label: "solar deals closed from 817 leads" },
+  { value: "15.2%", label: "lead-to-sale conversion for that client" },
+  { value: "158 of 397", label: "initially unbooked leads converted by AI text follow-up" },
 ];
 
 export const STATS_SOURCE =
-  "Cost per appointment, conversion and show-rate figures are from our solar portfolio, verified in-platform. Show rate measured across 487 appointments.";
+  "$40–$52 is the average advertising cost per booking across our home services, meat processing, and med spa accounts — a separate portfolio figure. The solar figures are one client, with advertising running 1 April – 22 September 2026: leads and closed deals are owner-reported and the rates are calculated, and the client's own sales team ran the consultations and closed the deals. Results vary by market and are not a guarantee.";
 
 /** Replace the bracketed text with real customers' words. Entries flagged `placeholder`
  *  are NOT rendered; the whole section is hidden until at least one is real. */
@@ -80,11 +85,11 @@ export const TEAM = [
   {
     name: "Sufyan Sheikh",
     role: "Co-founder, sales & marketing",
-    bio: "$10M+ generated through his own solar company, which runs on autopilot.",
+    bio: "Years of door-to-door and field sales. Runs the ads, offers and follow-up scripts.",
   },
   {
     name: "Subaiyal Sheikh",
     role: "Co-founder, engineering",
-    bio: "Full-stack architect who has shipped for Fortune 5 companies. Builds the AI systems.",
+    bio: "Full-stack architect who has shipped for Fortune 5 companies. Builds the agents and the CRM.",
   },
 ];

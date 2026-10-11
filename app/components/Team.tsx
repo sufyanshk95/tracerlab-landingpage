@@ -30,7 +30,7 @@ const TEAM: Member[] = [
   {
     name: "Sufyan Sheikh",
     role: "Co-founder — sales & marketing",
-    bio: "Millions in revenue closed the hard way — years of door-to-door sales. Sufyan runs sales and marketing: the offers, the ads, and the field-tested instinct for what actually makes a lead say yes.",
+    bio: "Years of door-to-door and field sales before Tracerlabs. Sufyan runs sales and marketing: the offers, the ad campaigns, and the follow-up scripts the agents run.",
     img: "/assets/team-sufyan.jpg",
     objectPosition: "50% 25%",
     imgTransform: "scale(1.1)",
@@ -40,7 +40,7 @@ const TEAM: Member[] = [
   {
     name: "Subaiyal Sheikh",
     role: "Co-founder — engineering",
-    bio: "Full-stack architect who has shipped for Fortune 5 companies and startups — production AI, payment systems moving millions. Subaiyal maps how a business actually runs, finds where it leaks, and builds the agentic systems that fix it.",
+    bio: "Full-stack architect who has shipped for Fortune 5 companies and startups — production AI and payment systems. Subaiyal maps how a business runs and builds the CRM and automation around it.",
     img: "/assets/team-subaiyal.jpg",
     objectPosition: "50% 0%",
     imgTransform: "scale(1.07)",
@@ -50,7 +50,7 @@ const TEAM: Member[] = [
   {
     name: "Jarvis",
     role: "Customer success — AI agent",
-    bio: "Jarvis runs client success: onboarding, check-ins, status updates, and the follow-through that keeps every engagement on track. Replies in minutes, never drops a thread, and loops a founder in the moment it matters.",
+    bio: "An AI agent we run on ourselves. Jarvis handles client-success administration — onboarding steps, check-ins and status updates — and hands anything that needs a decision to a founder.",
     img: "/assets/team-jarvis.jpg",
     objectPosition: "50% 20%",
     agent: true,
@@ -58,7 +58,7 @@ const TEAM: Member[] = [
   {
     name: "Tracy",
     role: "SDR — AI agent",
-    bio: "Tracy is our sales development rep. She works the top of the funnel — outreach, follow-ups, and the qualifying conversations that turn a cold name into a booked call — and produces her own reels for our socials.",
+    bio: "An AI agent we run on ourselves. Tracy works the top of our funnel — outreach, follow-ups and qualifying conversations that lead to a booked call — and drafts the reels for our social channels.",
     img: "/assets/team-tracy.jpg",
     objectPosition: "50% 20%",
     agent: true,
@@ -90,12 +90,12 @@ export default function Team() {
             className="mt-4 text-[clamp(2.1rem,4.6vw,3.3rem)] font-extrabold leading-[1.06] tracking-tight text-ink"
             style={{ fontFamily: DISPLAY }}
           >
-            Two people, two agents. The whole machine.
+            Two founders, and the agents we run on ourselves.
           </h2>
           <p className="mt-5 max-w-[40rem] text-[1.05rem] leading-[1.7] text-ink/60">
-            Sales and software under one roof — plus the AI agents we run on
-            ourselves first. The reason everything we ship works end to end,
-            from the first ad dollar to the booked job.
+            Sales and engineering under one roof. The two AI agents below do
+            administrative work for Tracerlabs the same way the agents we build
+            do for clients — with a founder making the decisions.
           </p>
         </div>
 
@@ -104,7 +104,7 @@ export default function Team() {
             <article key={m.name} className="group h-full">
               {/* alternate depths so the row reads as two layers, not a flat strip */}
               <Card bevel={12} depth={i % 2 ? 24 : 12} className="h-full" contentClassName="h-full">
-                <div className="relative aspect-square w-full overflow-hidden bg-[#0b0b0f]">
+                <div className="relative aspect-square w-full overflow-hidden bg-[#07090d]">
                   <Image
                     src={m.img}
                     alt={`Portrait of ${m.name}`}
